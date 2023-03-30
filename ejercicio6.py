@@ -2,8 +2,8 @@
 
 class nodoMatriz:
     def __init__(self, valor):
-        self.valor=valor
-        self.siguiente=None
+        self.valor=valor   
+        self.siguiente=None   
         self.anterior=None
         self.arriba=None
         self.abajo=None
@@ -13,18 +13,18 @@ class Matriz:
         self.matriz=matriz
         self.filas=len(matriz)
         self.columnas=len(matriz[0])
-        self.cabeza=None
+        self.cabeza=None    #cabeza es el nodo que apunta a la primera fila y primera columna
         self.crearMatriz()
         self.determinante()
 
     def crearMatriz(self):
-        self.cabeza=nodoMatriz(0)
-        aux=self.cabeza
-        for i in range(self.filas):
+        self.cabeza=nodoMatriz(0)  #creamos la cabeza
+        aux=self.cabeza    #creamos un auxiliar que apunte a la cabeza
+        for i in range(self.filas):    #creamos la primera fila y columna
             for j in range(self.columnas):
-                aux.siguiente=nodoMatriz(self.matriz[i][j])
-                aux.siguiente.anterior=aux
-                aux=aux.siguiente
+                aux.siguiente=nodoMatriz(self.matriz[i][j])  #creamos el nodo de la derecha y le asignamos el valor de la matriz
+                aux.siguiente.anterior=aux   
+                aux=aux.siguiente   #el auxiliar avanza al siguiente nodo
             aux=self.cabeza
             for k in range(i+1):
                 aux.abajo=nodoMatriz(0)
