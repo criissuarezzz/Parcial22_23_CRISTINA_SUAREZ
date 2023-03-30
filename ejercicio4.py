@@ -5,7 +5,7 @@ class Alumno:
         print("Alumno creado con éxito")
 
     def __str__(self):
-        return "Nombre: "+self.nombre+". Nota: "+str(self.nota)+". Alumno creado con éxito."
+        return "Nombre: "+self.nombre+". Nota: "+str(self.nota)+"."
 
     def calificacion(self):
         if self.nota>=5:
