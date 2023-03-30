@@ -1,70 +1,28 @@
+def sarrusiterativo():
+    print('\033[35m'+ "DETERMINANTE DE UNA MATRIZ 5X5 DE MANERA ITERATIVA " + '\033[0m')
+    matriz = []
+    for i in range(5):
+        matriz.append([])
+        for j in range(5):
+            matriz[i].append(int(input("Introduce el valor de la posición (" + str(i) + "," + str(j) + "): ")))
+    print("La matriz es: ")
+    for i in range(5):
+        print(matriz[i])
 
 
-class nodoMatriz:
-    def __init__(self, valor):
-        self.valor=valor   
-        self.siguiente=None   
-        self.anterior=None
-        self.arriba=None
-        self.abajo=None
-
-class Matriz:
-    def __init__(self, matriz):
-        self.matriz=matriz
-        self.filas=len(matriz)
-        self.columnas=len(matriz[0])
-        self.cabeza=None    #cabeza es el nodo que apunta a la primera fila y primera columna
-        self.crearMatriz()
-        self.determinante()
-
-    def crearMatriz(self):
-        self.cabeza=nodoMatriz(0)  #creamos la cabeza
-        aux=self.cabeza    #creamos un auxiliar que apunte a la cabeza
-        for i in range(self.filas):    #creamos la primera fila y columna
-            for j in range(self.columnas):
-                aux.siguiente=nodoMatriz(self.matriz[i][j])  #creamos el nodo de la derecha y le asignamos el valor de la matriz
-                aux.siguiente.anterior=aux   
-                aux=aux.siguiente   #el auxiliar avanza al siguiente nodo
-            aux=self.cabeza
-            for k in range(i+1):
-                aux.abajo=nodoMatriz(0)
-                aux.abajo.arriba=aux
-                aux=aux.abajo
-            aux=self.cabeza
-
-    def determinante(self):
-        determinante=0
-        if self.filas==2 and self.columnas==2:
-            determinante=self.matriz[0][0]*self.matriz[1][1]-self.matriz[0][1]*self.matriz[1][0]
-            print("El determinante de la matriz es: ", determinante)
-        else:
-            for i in range(self.filas):
-                matrizAux=[]
-                for j in range(self.filas):
-                    if j!=i:
-                        matrizAux.append(self.matriz[j])
-                matrizAux.pop(0)
-                for k in range(len(matrizAux)):
-                    matrizAux[k].pop(0)
-                determinante+=self.matriz[i][0]*self.determinanteAux(matrizAux)
-            print("El determinante de la matriz es: ", determinante)
-
-    def determinanteAux(self, matriz):
-        determinante=0
-        if len(matriz)==2:
-            determinante=matriz[0][0]*matriz[1][1]-matriz[0][1]*matriz[1][0]
-            return determinante
-        else:
-            for i in range(len(matriz)):
-                matrizAux=[]
-                for j in range(len(matriz)):
-                    if j!=i:
-                        matrizAux.append(matriz[j])
-                matrizAux.pop(0)
-                for k in range(len(matrizAux)):
-                    matrizAux[k].pop(0)
-                determinante+=matriz[i][0]*self.determinanteAux(matrizAux)
-            return determinante
-        
-matriz=Matriz([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]])
-
+    print('\033[36m'+"¿desea cambiar algún numero de la matriz? (si/no)"+'\033[0m')
+    respuesta = input("->")
+    if respuesta == "si":
+        print("ingrese la posicion del numero que desea cambiar")
+        print("fila: ")
+        fila = int(input("->"))
+        print("columna: ")
+        columna = int(input("->"))
+        print("ingrese el nuevo numero: ")
+        numero = int(input("->"))
+        matriz[fila][columna] = numero
+        print("la matriz ahora es: ")
+        for i in range(5):
+            print(matriz[i])
+    else:
+        print("la matriz no se modificará")
