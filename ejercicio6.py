@@ -19,3 +19,19 @@ class Matriz:
         self.determinante()
 
     def crearMatriz(self):
+        self.cabeza=nodoMatriz(0)
+        aux=self.cabeza
+        for i in range(self.filas):
+            for j in range(self.columnas):
+                aux.siguiente=nodoMatriz(self.matriz[i][j])
+                aux.siguiente.anterior=aux
+                aux=aux.siguiente
+            aux=self.cabeza
+            for k in range(i+1):
+                aux.abajo=nodoMatriz(0)
+                aux.abajo.arriba=aux
+                aux=aux.abajo
+            aux=self.cabeza
+
+    def determinante(self):
+        
