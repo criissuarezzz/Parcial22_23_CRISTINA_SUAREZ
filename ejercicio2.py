@@ -1,4 +1,3 @@
-#dada la lista [18, 50, 210, 80, 145, 333, 70, 30], imprimir el numero en caso de que sea multiplo de 10 y menor de 200 utilizando clases y tda
 class Lista:
     def __init__(self, lista):
         self.lista=lista
