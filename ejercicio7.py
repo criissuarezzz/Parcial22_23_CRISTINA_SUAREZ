@@ -48,3 +48,21 @@ class Polinomio:
                 resultado += aux.dato.coeficiente * (x ** aux.dato.exponente)
                 aux = aux.siguiente
             return resultado
+        
+    def restar(self, polinomio):
+        if self.termino_mayor is None:
+            print("El polinomio no tiene terminos")
+        else:
+            aux = self.termino_mayor
+            while aux is not None:
+                aux.dato.coeficiente -= polinomio.evaluar(aux.dato.exponente)
+                aux = aux.siguiente
+    
+    def dividir(self, polinomio):
+        if self.termino_mayor is None:
+            print("El polinomio no tiene terminos")
+        else:
+            aux = self.termino_mayor
+            while aux is not None:
+                aux.dato.coeficiente /= polinomio.evaluar(aux.dato.exponente)
+                aux = aux.siguiente
