@@ -78,6 +78,73 @@ def recursivo():
     print("el determinante de la matriz es: ", determinante(matriz))
     print('\033[35m'+ "===================" + '\033[0m')
 
+#con clases y nodos
+class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.siguiente = None
+
+class Lista:
+    def __init__(self):
+        self.inicio = None
+        self.fin = None
+
+    def agregar(self, dato):
+        if self.inicio is None:
+            self.inicio = self.fin = Nodo(dato)
+        else:
+            aux = self.fin
+            self.fin = aux.siguiente = Nodo(dato)
+
+    def recorrer(self):
+        aux = self.inicio
+        while aux:
+            print(aux.dato, end=" ")
+            aux = aux.siguiente
+        print()
+
+    def determinante(self):
+        if self.inicio is None:
+            return 0
+        else:
+            matriz = []
+            aux = self.inicio
+            while aux:
+                matriz.append(aux.dato)
+                aux = aux.siguiente
+            if len(matriz) == 1:
+                return matriz[0][0]
+            else:
+                determinante = 0
+                for i in range(len(matriz)):
+                    determinante += (-1)**i * matriz[0][i] * self.determinante([fila[:i] + fila[i+1:] for fila in (matriz[1:])])
+                return determinante
+
+    def cambiar(self):
+        print("ingrese la posicion del numero que desea cambiar")
+        print("fila: ")
+        fila = int(input("->"))
+        print("columna: ")
+        columna = int(input("->"))
+        print("ingrese el nuevo numero: ")
+        numero = int(input("->"))
+        aux = self.inicio
+        while aux:
+            if aux.dato[fila][columna] == aux.dato[fila][columna]:
+                aux.dato[fila][columna] = numero
+            aux = aux.siguiente
+
+    def matriz(self):
+        aux = self.inicio
+        while aux:
+            for i in range(5):
+                for j in range(5):
+                    print(aux.dato[i][j], end=" ")
+                print()
+            aux = aux.siguiente
+
+def iterativo():
+    
 
 
 
@@ -86,4 +153,3 @@ if __name__ == "__main__":
 
     recursivo()
 
-    
