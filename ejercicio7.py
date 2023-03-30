@@ -82,18 +82,7 @@ class Polinomio(object):
             actual = actual.sig
         return resultado
     
-    def sumar_polinomios(pol1, pol2):
-        """Suma dos polinomios"""
-        pol3 = Polinomio()
-        actual = pol1.termino_mayor
-        while (actual is not None):
-            Polinomio.agregar_termino(pol3, actual.info.termino, actual.info.valor)
-            actual = actual.sig
-        actual = pol2.termino_mayor
-        while (actual is not None):
-            Polinomio.modificar_termino(pol3, actual.info.termino, actual.info.valor + Polinomio.evaluar_polinomio(pol3, actual.info.termino))
-            actual = actual.sig
-        return pol3
+
     
     def restar_polinomios(pol1, pol2):
         """Resta dos polinomios"""
@@ -108,17 +97,7 @@ class Polinomio(object):
             actual = actual.sig
         return pol3
     
-    def multiplicar_polinomios(pol1, pol2):
-        """Multiplica dos polinomios"""
-        pol3 = Polinomio()
-        actual = pol1.termino_mayor
-        while (actual is not None):
-            actual2 = pol2.termino_mayor
-            while (actual2 is not None):
-                Polinomio.modificar_termino(pol3, actual.info.termino + actual2.info.termino, actual.info.valor * actual2.info.valor + Polinomio.evaluar_polinomio(pol3, actual.info.termino + actual2.info.termino))
-                actual2 = actual2.sig
-            actual = actual.sig
-        return pol3
+
     
     def dividir_polinomios(pol1, pol2): 
         """Divide dos polinomios"""
@@ -145,10 +124,10 @@ class Polinomio(object):
             actual = actual.sig
         return actual is not None
     
+    
 
 
 
-#pruebas con unittest
 class TestPolinomio(unittest.TestCase):
     def test_agregar_termino(self):
         p1=Polinomio()
@@ -182,16 +161,23 @@ class TestPolinomio(unittest.TestCase):
         p1.agregar_termino(3,2)
         self.assertEqual(p1.evaluar_polinomio(4), 64)
     
-    def test_sumar_polinomios(self):
+    def test_existe_termino(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        self.assertEqual(p1.existe_termino(2), True)
+
+    def test_dividir_polinomios(self):
         p1=Polinomio()
         p1.agregar_termino(2,-4)
         p1.agregar_termino(3,2)
         p2=Polinomio()
         p2.agregar_termino(3,4)
         p2.agregar_termino(6,1)
-        p3=p1.sumar_polinomios(p2)
-        self.assertEqual(p3.mostrar_polinomio(), "+22x^3-4x^2")
-    
+        p3,p4=p1.dividir_polinomios(p2)
+        self.assertEqual(p3.mostrar_polinomio(), "+0.5x^3")
+        self.assertEqual(p4.mostrar_polinomio(), "-2.0x^2-4.0x^3")
+
     def test_restar_polinomios(self):
         p1=Polinomio()
         p1.agregar_termino(2,-4)
