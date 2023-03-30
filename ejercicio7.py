@@ -1,147 +1,239 @@
-#implementar sobre el TDA polinomio de la clase anterior, los siguientes métodos:
-#restar
-#dividir
-#eliminar un termino
-#determinar si un termino existe
+import unittest
 
-class datoPolinomio:
-    def __init__(self, coeficiente, exponente):
-        self.coeficiente = coeficiente
-        self.exponente = exponente
 
-class nodoPolinomio:
-    def __init__(self, dato, siguiente = None):
-        self.dato = dato
-        self.siguiente = siguiente
+class Nodo(object):
+    """Clase nodo simmplemente enlazado"""
 
-class Polinomio:
+    info, sig = None, None
+
+
+class datoPolinomio(object):
+    """Clase dato polinomio"""
+
+    def __init__(self, valor, termino):
+        """Crea un dato polinomio con valor y término"""
+        self.valor = valor # valor equivale al coeficiente
+        self.termino = termino # termino equivale al exponente
+
+
+class Polinomio(object):
+    """Clase polinomio"""
+
     def __init__(self):
-        self.termino_mayor = None
-        self.grado= -1
+        """Crea un polinomio del grado cero"""
+        self.termino_mayor = None   # Nodo con el término de mayor grado, y None para polinomio de grado cero para empezar
+        self.grado = -1         # Grado del polinomio, -1 para polinomio de grado cero para empezar
 
-    def agregar_termino(self, coeficiente, exponente):
-        if self.termino_mayor is None:
-            self.termino_mayor = nodoPolinomio(datoPolinomio(coeficiente, exponente))
-            self.grado = exponente
+    def agregar_termino(polinomio, termino, valor):
+        """Agrega un termino y su valor al polinomio"""
+        aux = Nodo()
+        dato = datoPolinomio(valor, termino)
+        aux.info = dato
+        if (termino > polinomio.grado):
+            aux.sig = polinomio.termino_mayor
+            polinomio.termino_mayor = aux
+            polinomio.grado = termino
         else:
-            aux = self.termino_mayor
-            while aux.siguiente is not None:
-                aux = aux.siguiente
-            aux.siguiente = nodoPolinomio(datoPolinomio(coeficiente, exponente))
-            if exponente > self.grado:
-                self.grado = exponente
+            actual = polinomio.termino_mayor
+            while (actual.sig is not None and termino < actual.sig.info.termino):
+                actual = actual.sig
+            aux.sig = actual.sig
+            actual.sig = aux
 
-    def mostrar(self):
-        aux = self.termino_mayor
-        while aux is not None:
-            print(aux.dato.coeficiente, "x^", aux.dato.exponente, end=" ")
-            aux = aux.siguiente
-        print()
-
-    def evaluar(self, x):
-        if self.termino_mayor is None:
-            print("El polinomio no tiene terminos")
-        else:
-            aux = self.termino_mayor
-            resultado = 0
-            while aux is not None:
-                resultado += aux.dato.coeficiente * (x ** aux.dato.exponente)
-                aux = aux.siguiente
-            return resultado
-        
-    def restar(self, polinomio):
-        if self.termino_mayor is None:
-            print("El polinomio no tiene terminos")
-        else:
-            aux = self.termino_mayor
-            while aux is not None:
-                aux.dato.coeficiente -= polinomio.evaluar(aux.dato.exponente)
-                aux = aux.siguiente
+    def modificar_termino(pol, termino, valor):
+        """Modifica el valor de un termino del polinomio"""
+        actual = pol.termino_mayor
+        while (actual is not None and actual.info.termino != termino):
+            actual = actual.sig
+        if (actual is not None):
+            actual.info.valor = valor
     
-    def dividir(self, polinomio):
-        if self.termino_mayor is None:
-            print("El polinomio no tiene terminos")
-        else:
-            aux = self.termino_mayor
-            while aux is not None:
-                aux.dato.coeficiente /= polinomio.evaluar(aux.dato.exponente)
-                aux = aux.siguiente
+    def eliminar_termino(pol, termino):
+        """Elimina un termino del polinomio"""
+        if (pol.termino_mayor is not None):
+            if (pol.termino_mayor.info.termino == termino):
+                pol.termino_mayor = pol.termino_mayor.sig
+            else:
+                actual = pol.termino_mayor
+                while (actual.sig is not None and actual.sig.info.termino != termino):
+                    actual = actual.sig
+                if (actual.sig is not None):
+                    actual.sig = actual.sig.sig
     
-    def eliminar_termino(self, exponente):
-        if self.termino_mayor is None:
-            print("El polinomio no tiene terminos")
-        else:
-            aux = self.termino_mayor
-            while aux is not None:
-                if aux.dato.exponente == exponente:
-                    aux.dato.coeficiente = 0
-                aux = aux.siguiente
+    def mostrar_polinomio(polinomio):
+        """Muestra el polinomio"""
+        aux = polinomio.termino_mayor
+        pol = ""
+        if (aux is not None):
+            while (aux is not None):
+                signo = ""
+                if aux.info.valor >= 0:
+                    signo += "+"
+                pol += signo + str(aux.info.valor) + "x^" + str(aux.info.termino)
+                aux = aux.sig
+        return pol
 
-    def existe_termino(self, exponente):
-        if self.termino_mayor is None:
-            print("El polinomio no tiene terminos")
-        else:
-            aux = self.termino_mayor
-            while aux is not None:
-                if aux.dato.exponente == exponente:
-                    return True
-                aux = aux.siguiente
-            return False
-        
-    def mostrar_grado(self):
-        print(self.grado)
+    def evaluar_polinomio(pol, x):
+        """Evalua el polinomio en x"""
+        actual = pol.termino_mayor
+        resultado = 0
+        while (actual is not None):
+            resultado += actual.info.valor * (x ** actual.info.termino)
+            actual = actual.sig
+        return resultado
+    
+    def sumar_polinomios(pol1, pol2):
+        """Suma dos polinomios"""
+        pol3 = Polinomio()
+        actual = pol1.termino_mayor
+        while (actual is not None):
+            Polinomio.agregar_termino(pol3, actual.info.termino, actual.info.valor)
+            actual = actual.sig
+        actual = pol2.termino_mayor
+        while (actual is not None):
+            Polinomio.modificar_termino(pol3, actual.info.termino, actual.info.valor + Polinomio.evaluar_polinomio(pol3, actual.info.termino))
+            actual = actual.sig
+        return pol3
+    
+    def restar_polinomios(pol1, pol2):
+        """Resta dos polinomios"""
+        pol3 = Polinomio()
+        actual = pol1.termino_mayor
+        while (actual is not None):
+            Polinomio.agregar_termino(pol3, actual.info.termino, actual.info.valor)
+            actual = actual.sig
+        actual = pol2.termino_mayor
+        while (actual is not None):
+            Polinomio.modificar_termino(pol3, actual.info.termino, actual.info.valor - Polinomio.evaluar_polinomio(pol3, actual.info.termino))
+            actual = actual.sig
+        return pol3
+    
+    def multiplicar_polinomios(pol1, pol2):
+        """Multiplica dos polinomios"""
+        pol3 = Polinomio()
+        actual = pol1.termino_mayor
+        while (actual is not None):
+            actual2 = pol2.termino_mayor
+            while (actual2 is not None):
+                Polinomio.modificar_termino(pol3, actual.info.termino + actual2.info.termino, actual.info.valor * actual2.info.valor + Polinomio.evaluar_polinomio(pol3, actual.info.termino + actual2.info.termino))
+                actual2 = actual2.sig
+            actual = actual.sig
+        return pol3
+    
+    def dividir_polinomios(pol1, pol2): 
+        """Divide dos polinomios"""
+        pol3 = Polinomio()
+        pol4 = Polinomio()
+        actual = pol1.termino_mayor
+        while (actual is not None):
+            Polinomio.agregar_termino(pol4, actual.info.termino, actual.info.valor)
+            actual = actual.sig
+        while (pol4.grado >= pol2.grado):
+            termino = pol4.grado - pol2.grado
+            valor = pol4.termino_mayor.info.valor / pol2.termino_mayor.info.valor
+            Polinomio.agregar_termino(pol3, termino, valor)
+            actual = pol2.termino_mayor
+            while (actual is not None):
+                Polinomio.modificar_termino(pol4, actual.info.termino + termino, actual.info.valor * valor - Polinomio.evaluar_polinomio(pol4, actual.info.termino + termino))
+                actual = actual.sig
+        return pol3, pol4
+    
+    def existe_termino(pol, termino):
+        """Verifica si existe un termino en el polinomio"""
+        actual = pol.termino_mayor
+        while (actual is not None and actual.info.termino != termino):
+            actual = actual.sig
+        return actual is not None
+    
 
 
-p1 = Polinomio()
-p1.agregar_termino(2, 3)
-p1.agregar_termino(3, 2)
-p1.agregar_termino(4, 1)
-p1.agregar_termino(5, 0)
-print("El polinomio 1 es:")
-p1.mostrar()
-print("cuyo grado es: ")
-p1.mostrar_grado()
-print("Si eliminamos el termino de grado 2, el polinomio queda: ")
-p1.eliminar_termino(2)
 
-p2 = Polinomio()
-p2.agregar_termino(2, 3)
-p2.agregar_termino(3, 2)
-p2.agregar_termino(4, 1)
-p2.agregar_termino(5, 0)
-print("El polinomio 2 es:")
-p2.mostrar()
-print("cuyo grado es: ")
-p2.mostrar_grado()
-print("Si eliminamos el termino de grado 3, el polinomio queda: ")
-p2.eliminar_termino(3)
+#pruebas con unittest
+class TestPolinomio(unittest.TestCase):
+    def test_agregar_termino(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        self.assertEqual(p1.mostrar_polinomio(), "+2x^3-4x^2")
+    
+    def test_modificar_termino(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        p1.modificar_termino(2,2)
+        self.assertEqual(p1.mostrar_polinomio(), "+2x^3+2x^2")
+    
+    def test_eliminar_termino(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        p1.eliminar_termino(3)
+        self.assertEqual(p1.mostrar_polinomio(), "-4x^2")
+    
+    def test_mostrar_polinomio(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        self.assertEqual(p1.mostrar_polinomio(), "+2x^3-4x^2")
+    
+    def test_evaluar_polinomio(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        self.assertEqual(p1.evaluar_polinomio(4), 64)
+    
+    def test_sumar_polinomios(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        p2=Polinomio()
+        p2.agregar_termino(3,4)
+        p2.agregar_termino(6,1)
+        p3=p1.sumar_polinomios(p2)
+        self.assertEqual(p3.mostrar_polinomio(), "+22x^3-4x^2")
+    
+    def test_restar_polinomios(self):
+        p1=Polinomio()
+        p1.agregar_termino(2,-4)
+        p1.agregar_termino(3,2)
+        p2=Polinomio()
+        p2.agregar_termino(3,4)
+        p2.agregar_termino(6,1)
+        p3=p1.restar_polinomios(p2)
+        self.assertEqual(p3.mostrar_polinomio(), "-14x^3-4x^2")
 
-p3 = Polinomio()
-p3.agregar_termino(2, 3)
-p3.agregar_termino(3, 2)
-p3.agregar_termino(4, 1)
-p3.agregar_termino(5, 0)
-print("El polinomio 3 es:")
-p3.mostrar()
-print("cuyo grado es: ")
-p3.mostrar_grado()
-print("Si eliminamos el termino de grado 4, el polinomio queda: ")
-p3.eliminar_termino(4)
 
-print("Si al polinomio 1 le restamos el polinomio 2, el resultado es: ")
-p1.restar(p2)
-print("Si al polinomio 2 le restamos el polinomio 1, el resultado es: ")
-p2.restar(p1)
-print("Si al polinomio 3 le restamos el polinomio 1, el resultado es: ")
-p3.restar(p1)
+if __name__ == '__main__':
+    unittest.main()
+    #ejemplos
+    p1=Polinomio()
+    p1.agregar_termino(2,-4)  #-4x^2
+    p1.agregar_termino(3,2)   #2x^3
 
-print("Si el polinomio 1 lo dividimos por el polinomio 2, el resultado es: ")
-p1.dividir(p2)
-print("Si el polinomio 2 lo dividimos por el polinomio 1, el resultado es: ")
-p2.dividir(p1)
-print("Si el polinomio 3 lo dividimos por el polinomio 1, el resultado es: ")
-p3.dividir(p1)
 
-print("¿Existe el termino de grado 2 en el polinomio 1? "+ p1.existe_termino(2))
-print("¿Existe el termino de grado 3 en el polinomio 1? "+ p1.existe_termino(3))
-print("¿Existe el termino de grado 4 en el polinomio 1? "+ p1.existe_termino(4))
+    p2=Polinomio()
+    p2.agregar_termino(3,4)   #4x^3
+    p2.agregar_termino(6,1)   #x^6
+
+    print(p1.mostrar_polinomio()) # Muestra el polinomio p1
+    print(p2.mostrar_polinomio()) # Muestra el polinomio p2
+    print(p1.evaluar_polinomio(4)) # Evalua el polinomio en x=4
+    print(p2.evaluar_polinomio(4))  # Evalua el polinomio en x=4
+
+    p3=p1.sumar_polinomios(p2) # Suma los polinomios p1 y p2
+    p3.mostrar_polinomio() # Muestra el polinomio p3
+
+    p4=p1.restar_polinomios(p2) # Resta los polinomios p1 y p2
+    p4.mostrar_polinomio() # Muestra el polinomio p4
+
+    p5=p1.multiplicar_polinomios(p2) # Multiplica los polinomios p1 y p2
+    p5.mostrar_polinomio() # Muestra el polinomio p5
+
+    p6,p7=p1.dividir_polinomios(p2) # Divide los polinomios p1 y p2
+    p6.mostrar_polinomio() # Muestra el polinomio p6    
+    p7.mostrar_polinomio() # Muestra el polinomio p7
+
+    p1.eliminar_termino(4) # Elimina el término 2x^4
+    print(p1.mostrar_polinomio()) # Muestra el polinomio en forma legible
+
+    print(p2.existe_termino(4)) # Devuelve True si existe el término 2x^4
