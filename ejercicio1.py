@@ -43,4 +43,6 @@ class Lista:
 
 lista=Lista([18, 50, 210, 80, 145, 333, 70, 30])
 lista.multiplo()
+print("La lista ordenada es: ", lista.mezcla([18, 50, 210, 80, 145, 333, 70, 30]))
+
 
