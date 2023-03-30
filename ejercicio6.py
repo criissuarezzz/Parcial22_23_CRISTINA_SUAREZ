@@ -12,4 +12,10 @@ class nodoMatriz:
 class Matriz:
     def __init__(self, matriz):
         self.matriz=matriz
+        self.filas=len(matriz)
+        self.columnas=len(matriz[0])
+        self.cabeza=None
         self.crearMatriz()
+        self.determinante()
+
+    def crearMatriz(self):
