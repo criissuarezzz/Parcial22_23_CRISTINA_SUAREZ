@@ -143,13 +143,25 @@ class Lista:
                 print()
             aux = aux.siguiente
 
-def iterativo():
-    
-
-
 
 if __name__ == "__main__":
-    iterativo()
+   
 
-    recursivo()
+    lista = Lista()
+    for i in range(5):
+        lista.agregar([])
+        for j in range(5):
+            lista.agregar(int(input("ingrese el numero de la posicion ["+str(i)+"]["+str(j)+"]: ")))
+    print("la matriz es: ")
+    lista.matriz()
+    print('\033[36m'+"¿desea cambiar algún numero de la matriz? (si/no)"+'\033[0m')
+    respuesta = input("->")
+    if respuesta == "si":
+        lista.cambiar()
+        print("la matriz es: ")
+        lista.matriz()
+    else:
+        print("la matriz se queda igual")
+    print("el determinante de la matriz es: ", lista.determinante())
+
 
