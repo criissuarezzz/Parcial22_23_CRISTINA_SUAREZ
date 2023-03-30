@@ -1,4 +1,3 @@
-#determinante matriz cuadrada 5x5 con clases y TDA
 
 
 class nodoMatriz:
@@ -34,4 +33,38 @@ class Matriz:
             aux=self.cabeza
 
     def determinante(self):
+        determinante=0
+        if self.filas==2 and self.columnas==2:
+            determinante=self.matriz[0][0]*self.matriz[1][1]-self.matriz[0][1]*self.matriz[1][0]
+            print("El determinante de la matriz es: ", determinante)
+        else:
+            for i in range(self.filas):
+                matrizAux=[]
+                for j in range(self.filas):
+                    if j!=i:
+                        matrizAux.append(self.matriz[j])
+                matrizAux.pop(0)
+                for k in range(len(matrizAux)):
+                    matrizAux[k].pop(0)
+                determinante+=self.matriz[i][0]*self.determinanteAux(matrizAux)
+            print("El determinante de la matriz es: ", determinante)
+
+    def determinanteAux(self, matriz):
+        determinante=0
+        if len(matriz)==2:
+            determinante=matriz[0][0]*matriz[1][1]-matriz[0][1]*matriz[1][0]
+            return determinante
+        else:
+            for i in range(len(matriz)):
+                matrizAux=[]
+                for j in range(len(matriz)):
+                    if j!=i:
+                        matrizAux.append(matriz[j])
+                matrizAux.pop(0)
+                for k in range(len(matrizAux)):
+                    matrizAux[k].pop(0)
+                determinante+=matriz[i][0]*self.determinanteAux(matrizAux)
+            return determinante
         
+matriz=Matriz([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [11, 12, 13, 14, 15], [16, 17, 18, 19, 20], [21, 22, 23, 24, 25]])
+
