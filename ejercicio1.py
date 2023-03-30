@@ -10,19 +10,37 @@ class Lista:
             if i>300:
                 print("El numero", i ,"es mayor de 300, paramos el programa")
                 break
+    
+    def mezcla(self, lista):
+        if len(lista)>1:
+            mitad=len(lista)//2
+            izquierda=lista[:mitad]
+            derecha=lista[mitad:]
+            self.mezcla(izquierda)
+            self.mezcla(derecha)
+            i=0
+            j=0
+            k=0
+            while i<len(izquierda) and j<len(derecha):
+                if izquierda[i]<derecha[j]:
+                    lista[k]=izquierda[i]
+                    i+=1
+                else:
+                    lista[k]=derecha[j]
+                    j+=1
+                k+=1
+            while i<len(izquierda):
+                lista[k]=izquierda[i]
+                i+=1
+                k+=1
+            while j<len(derecha):
+                lista[k]=derecha[j]
+                j+=1
+                k+=1
+        return lista
+    
 
-    def mezcla(lista):
-        if len(lista)<=1:
-            return lista
-        else:
-            medio=len(lista)//2
-            izquierda=mezcla(lista[:medio])
-            derecha=mezcla(lista[medio:])
-            return mezcla(izquierda, derecha)
 
-#puesto a prueba:
-print("Mezcla:")
-print(mezcla([11,3,81,7,45]))
 lista=Lista([18, 50, 210, 80, 145, 333, 70, 30])
 lista.multiplo()
 
