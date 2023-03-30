@@ -78,7 +78,21 @@ def recursivo():
     print("el determinante de la matriz es: ", determinante(matriz))
     print('\033[35m'+ "===================" + '\033[0m')
 
-#con clases y nodos
+def main():
+    print('\033[35m'+ "===================" + '\033[0m')
+    print('\033[35m'+ "DETERMINANTE DE UNA MATRIZ DE 5X5" + '\033[0m')
+    print('\033[35m'+ "===================" + '\033[0m')
+    print("¿cómo desea calcular el determinante de la matriz?")
+    print("1. de manera iterativa")
+    print("2. de manera recursiva")
+    opcion = int(input("->"))
+    if opcion == 1:
+        iterativo()
+    elif opcion == 2:
+        recursivo()
+    else:
+        print("opcion no valida")
+
 class Nodo:
     def __init__(self, dato):
         self.dato = dato
@@ -145,8 +159,7 @@ class Lista:
 
 
 if __name__ == "__main__":
-   
-
+    main()
     lista = Lista()
     for i in range(5):
         lista.agregar([])
