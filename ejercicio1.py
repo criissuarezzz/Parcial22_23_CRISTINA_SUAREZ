@@ -44,7 +44,7 @@ class Lista:
             if i==valor:
                 print("El indice del valor", valor, "es", self.lista.index(valor))
             else:
-                return -1
+                print("El valor", valor, "no está en la lista. -1")
 
 lista=Lista([18, 50, 210, 80, 145, 333, 70, 30])
 lista.multiplo()
