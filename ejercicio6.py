@@ -44,7 +44,7 @@ def determinante():
         print("el determinante de la matriz es: ", determinante(matriz))
     else:
         print("opcion no valida")
-        interorecur()
+        
 
 if __name__=="__main__":
     determinante()
